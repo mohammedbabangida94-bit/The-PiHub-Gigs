@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PiHub Gigs</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <script src="https://sdk.minepi.com/pi-sdk.js"></script>
+    
+    <script>Pi.init({ version: "2.0" })</script>
+    <script src="app.js" defer></script>
+
+    <script> 
+        // Authenticate the user, and get permission to request payments from them
+        const scopes = ['payments','username'];
+
+        // Read more about this callback in the SDK reference:
+        function onIncompletePaymentFound(payment) { 
+            console.log('incomplete payment found')
+            paymentId = payment.identifier
+            txid = payment.transaction.txid
+            $.post('/payment/complete',
+                    {
+                        paymentId: paymentId,
+                        txid: txid,
+                        debug: 'cancel'
+                    }
+                )
+        };
+        Pi.authenticate(scopes, onIncompletePaymentFound).then(function(auth) {
+          console.log(`Hi there! You're ready to make payments!`)
+          const accessToken = auth.accessToken
+        }).catch(function(error) {
+          console.error(error);
+        });
+
+        const paymentData = {
+    amount: number,  /* Pi Amount being Transacted */
+    memo: string, /* "Any information that you want to add to payment" */
+    metadata: object {}, /* { Special Information: 1234, ... } */
+};
+
+// Callbacks the developer needs to implement:
+const paymentCallbacks = {
+    onReadyForServerApproval,
+    onReadyForServerCompletion,
+    onCancel,
+    onError
+    };
+
+Pi.createPayment(paymentData, paymentCallbacks).then(function(payment) {
+    console.log(payment)
+  }).catch(function(error) {
+    console.error(error);
+  });
+
+  const onReadyForServerApproval = (paymentId) => {
+    console.log("onReadyForServerApproval", paymentId);
+    axiosClient.post('/payments/approve', {paymentId}, config);
+  }
+
+  const onReadyForServerCompletion = (paymentId, txid) => {
+    console.log("onReadyForServerCompletion", paymentId, txid);
+    axiosClient.post('/payments/complete', {paymentId, txid}, config);
+  }
+
+    </script>
+
+</head>
+<body>
+
+    <header>
+        <h1>PiHub Gigs</h1>
+        <nav>
+            <button class="nav-btn" data-page="home">Home</button>
+            <button class="nav-btn" data-page="create-gig">Post a Gig</button>
+            <button class="nav-btn" data-page="profile">My Profile</button>
+            <button id="login-btn" class="pi-btn">Login with Pi</button>
+        </nav>
+    </header>
+
+    <main>
+        <h2 id="welcome-message" class="hidden"></h2>
+
+        <section id="page-home" class="page active">
+            <h2>Find Your Next Gig</h2>
+            <p>Browse services offered by talented Pioneers.</p>
+            <div class="gig-list">
+                <div class="gig-card">
+                    <h3>I will design a logo for your Pi app</h3>
+                    <p class="gig-seller">by @pioneer123</p>
+                    <div class="gig-price">π 5.00</div>
+                    <button class="pi-btn buy-gig-btn" data-page="gig-detail">View Gig</button>
+                </div>
+                </div>
+        </section>
+
+        <section id="page-gig-detail" class="page">
+            <h2>Gig: I will design a logo...</h2>
+            <p>Full description of the gig goes here. I am a professional designer with 5 years of experience...</p>
+            <div class="gig-price">Price: π 5.00</div>
+            <button id="buy-btn" class="pi-btn">Buy Now with Pi</button>
+            <button class="nav-btn" data-page="home">Back to Gigs</button>
+        </section>
+
+        <section id="page-create-gig" class="page">
+            <h2>Create a New Gig</h2>
+            <form id="create-gig-form">
+                <div class="form-group">
+                    <label for="gig-title">Title</label>
+                    <input type="text" id="gig-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="gig-desc">Description</label>
+                    <textarea id="gig-desc" rows="5"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="gig-price">Price (in Pi)</label>
+                    <input type="number" id="gig-price" step="0.01" required>
+                </div>
+                <button type="submit" class="pi-btn">Submit Gig</button>
+            </form>
+        </section>
+        
+        <section id="page-profile" class="page">
+            <h2>My Profile</h2>
+            <p><strong>Username:</strong> <span id="profile-username">Not logged in</span></p>
+            <h3>My Gigs for Sale</h3>
+            <h3>Gigs I've Purchased</h3>
+            </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 PiHub Gigs</p>
+    </footer>
+
+</body>
+</html>

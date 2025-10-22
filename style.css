@@ -1,0 +1,166 @@
+/* --- CSS Variables (Theme) --- */
+:root {
+    --pi-purple: #5F4591;
+    --pi-gold: #F5A623;
+    --light-gray: #f4f4f4;
+    --dark-gray: #333;
+    --white: #ffffff;
+    --border-radius: 8px;
+    --box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* --- Basic Reset & Setup --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+    background-color: var(--light-gray);
+    color: var(--dark-gray);
+    line-height: 1.6;
+}
+
+/* --- Layout --- */
+header {
+    background-color: var(--white);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+header h1 {
+    color: var(--pi-purple);
+    font-size: 1.5rem;
+}
+
+header nav button {
+    margin-left: 0.5rem;
+}
+
+main {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    margin-top: 2rem;
+    color: #888;
+}
+
+/* --- Page (SPA) Handling --- */
+.page {
+    display: none; /* Hide all pages by default */
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+.page.active {
+    display: block; /* Show only the active page */
+}
+
+.hidden {
+    display: none;
+}
+
+#welcome-message {
+    text-align: center;
+    color: var(--pi-purple);
+    background: #e7e2f0;
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+}
+
+/* --- Buttons --- */
+button {
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.nav-btn {
+    background-color: transparent;
+    color: var(--pi-purple);
+}
+.nav-btn:hover {
+    background-color: var(--light-gray);
+}
+
+/* Pi-themed button */
+.pi-btn {
+    background-color: var(--pi-purple);
+    color: var(--white);
+}
+.pi-btn:hover {
+    background-color: #4a3570;
+}
+
+/* --- Gig Card --- */
+.gig-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.gig-card {
+    background: var(--white);
+    border: 1px solid #eee;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.gig-card h3 {
+    font-size: 1.1rem;
+    padding: 1rem 1rem 0.5rem 1rem;
+}
+.gig-card .gig-seller {
+    padding: 0 1rem;
+    font-size: 0.9rem;
+    color: #777;
+}
+.gig-card .gig-price {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--pi-purple);
+    padding: 1rem;
+    margin-top: auto;
+}
+.gig-card .buy-gig-btn {
+    width: 100%;
+    border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+/* --- Form --- */
+.form-group {
+    margin-bottom: 1rem;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: bold;
+}
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+}
